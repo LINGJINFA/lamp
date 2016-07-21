@@ -11,117 +11,60 @@
 |
 */
 
-// Route::get('/', function () {
-    // return view('welcome');
-    // echo "test";
-    // echo date('Y-m-d h:i:s');
-
-    //获取配置文件
-    // echo Config::get('app.timezone');
-    // echo Config::get('app.url');
-    // echo Config::get('app.locale');
-
-	//设置配置信息
-	// Config::set('app.timezone','UTC');
-	// echo Config::get('app.timezone');
-	// echo Config::get('app.lucky');
-
-	//环境系统的信息
-	// echo env('DB_HOST');
-	// echo env('APP_KEY');	
-// });
-
-//路由的基本操作
-// Route::get('/text',function(){
-// 	echo "111"; 
-// });
-
-// Route::get('/test/add',function(){
-// 	return "222";
-
-// });
-// Route::post('/user/add',function(){
-// 	echo "qqq";
-// });
-
-// Route::get('/form',function(){
-
-// 	return view('form');
-// });
-
-//带参数的路由
-// Route::get('/shop/{id}',function($id){
-// 	echo "商品的id是".$id;
-// })->where('id','\d+');
-
-// Route::get('shops/{name}',function($name){
-// 	echo "商品的名字".$name;
-// })->where('name','[a-zA-Z]');
-
-//多个参数的路由
-// Route::get('/shop/{id}-{name}',function($id,$name){
-// 	echo $id."&".$name;
-// })->where('id','\d+')->where('name','[a-zA-Z]');
-
-//给路由器别名
-// Route::get('admin/user/add/{id}',['as'=>'goods',function($id){
-// 	echo route('goods').'<br>';
-// 	echo route('goods',['id'=>$id]);
-// }]);
-
-// Route::get('/test',function(){
-
-// 	echo route('bie');
-// 	//路由函数route 去获取别名或者是路由规则
-// });
-
-//路由组的设置
-// Route::group(['middleware'=>'login'],function(){
-
-// 	//路由
-// 	Route::get('/home/order',function(){
-// 		echo "我是前台的订单页面";
-// 	});
-
-// 	Route::get('/admin/user/edit',function(){
-// 		echo "这是后台用户的修改";
-// 	});
-
-// });
-
 // Route::get('/ss',function(){
 // 	abort('404');
 // });
 
-//Ajax
+Route::get('/login',function(){
+	echo "这是用户的登录界面";
+});
+
+//控制器
+Route::get('/user/add','UserController@add')->middleware('login');
+
+Route::get('/user/del','UserController@del');
+
+Route::get('/user/edit','UserController@edit');
+
+Route::post('/user/insert','UserController@insert');
+
+//控制器带参数的访问
+Route::get('/user/show/{id}','UserController@index');
 
 
-// Route::get('/ajax',function(){
-// 	//加载视图模板
-// 	return view('ajax');
-// });
+//控制器别名
+Route::get('/user/index1',['uses'=>'UserController@index','as'=>'users']);
 
-// Route::post('/post',function(){
-// 	echo "ajax的响应数据";
-// });
 
-// Route::get('/login',function(){
-// 	return "form";
-// });
 
-// Route::get('/home/person',function(){
-// 	echo "这是前台的个人中心";
-// })->middleware('login');
-// Route::get('/',function(){
-// 	$url = url('foo');
-// 	echo $url;
-// });
-Route::get('user/{name?}', function ($name = 'John') {
-    return $name;
+// Route::get('/add','ClassController@add');
+
+//隐式控制器  请求可以访问路由以shops开头的控制器里面的方法
+Route::controller('/shops','TestController');
+
+//请求
+Route::controller('/test','TestController');
+
+Route::post('/insert','TestController@insert');
+
+//文件上传
+Route::get('/upload',function(){
+    return view('upload');
+});
+
+Route::post('/uploadss','TestController@upload');
+
+//写入cookie
+Route::get('/writecookie',function(){
+    //写入cookie方法
+    \Cookie::queue('name','laowang',30);
+    return response('fff')->withCookie('id',12,30);
 });
 
 
+//获取cookie信息
+Route::get('/getcookie','TestController@cookie');
 
 
-
-
+//响应操作
+Route::get('/res','TestController@res');
