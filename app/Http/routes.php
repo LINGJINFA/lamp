@@ -37,7 +37,7 @@ Route::get('/user/index1',['uses'=>'UserController@index','as'=>'users']);
 
 
 
-// Route::get('/add','ClassController@add');
+
 
 //隐式控制器  请求可以访问路由以shops开头的控制器里面的方法
 Route::controller('/shops','TestController');
